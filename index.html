@@ -5,39 +5,298 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Japan Schedule - 일본 일정 관리를 위한 웹앱"
+      content="Visit Japan QR, 여행 일정, 비행기 일정표, 여행 일본어 사전을 한곳에 정리하는 앱"
     />
     <title>Japan Schedule</title>
+    <link rel="stylesheet" href="./src/styles.css" />
   </head>
   <body>
-    <main class="app-shell">
-      <section class="hero">
-        <p class="eyebrow">Japan Schedule</p>
-        <h1>일본 여행 일정을 한눈에 정리하세요.</h1>
-        <p class="lead">
-          항공, 숙소, 도시별 이동과 오늘 해야 할 일을 담아둘 수 있는
-          일정 앱의 시작 화면입니다.
-        </p>
-      </section>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Japan Schedule</p>
+          <h1>일본 여행 대시보드</h1>
+        </div>
+        <div class="trip-chip">
+          <span data-countdown-label>출국 탑승까지</span>
+          <strong data-flight-countdown>계산 중</strong>
+        </div>
+      </header>
 
-      <section class="schedule-board" aria-label="일정 예시">
-        <article>
-          <span>Day 1</span>
-          <h2>도쿄 도착</h2>
-          <p>나리타 공항, 숙소 체크인, 신주쿠 저녁 산책</p>
-        </article>
-        <article>
-          <span>Day 2</span>
-          <h2>시부야와 하라주쿠</h2>
-          <p>카페, 쇼핑, 요요기 공원, 저녁 예약</p>
-        </article>
-        <article>
-          <span>Day 3</span>
-          <h2>근교 이동</h2>
-          <p>가마쿠라 또는 요코하마 당일치기 일정</p>
-        </article>
-      </section>
-    </main>
-    <script type="module" src="/src/main.js"></script>
+      <nav class="tabbar" aria-label="주요 메뉴">
+        <button class="tab-button is-active" type="button" data-tab="visit">
+          <span class="tab-icon">▦</span>
+          <span>비짓재팬 QR</span>
+        </button>
+        <button class="tab-button" type="button" data-tab="schedule">
+          <span class="tab-icon">▤</span>
+          <span>여행일정</span>
+        </button>
+        <button class="tab-button" type="button" data-tab="flight">
+          <span class="tab-icon">✈</span>
+          <span>비행기 일정표</span>
+        </button>
+        <button class="tab-button" type="button" data-tab="dictionary">
+          <span class="tab-icon">あ</span>
+          <span>여행 일본어</span>
+        </button>
+      </nav>
+
+      <main>
+        <section class="tab-panel is-active" id="visit" data-panel="visit">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Visit Japan Web</p>
+              <h2>비짓재팬 큐알코드 보관함</h2>
+            </div>
+            <button class="ghost-button" type="button">QR 추가</button>
+          </div>
+
+          <div class="qr-grid">
+            <article class="qr-card">
+              <div class="qr-placeholder" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <div>
+                <h3>입국 심사 QR</h3>
+                <p>여권 정보와 입국 신고 확인용</p>
+              </div>
+              <strong>준비 필요</strong>
+            </article>
+            <article class="qr-card">
+              <div class="qr-placeholder is-green" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <div>
+                <h3>세관 신고 QR</h3>
+                <p>기내에서 바로 열 수 있게 보관</p>
+              </div>
+              <strong>준비 필요</strong>
+            </article>
+          </div>
+        </section>
+
+        <section class="tab-panel" id="schedule" data-panel="schedule">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Itinerary</p>
+              <h2>여행일정</h2>
+            </div>
+            <button class="ghost-button" type="button">일정 추가</button>
+          </div>
+
+          <div class="timeline">
+            <article>
+              <time>Day 1</time>
+              <div>
+                <h3>도쿄 도착</h3>
+                <p>나리타 공항, 숙소 체크인, 신주쿠 저녁 산책</p>
+              </div>
+            </article>
+            <article>
+              <time>Day 2</time>
+              <div>
+                <h3>시부야와 하라주쿠</h3>
+                <p>카페, 쇼핑, 요요기 공원, 저녁 예약</p>
+              </div>
+            </article>
+            <article>
+              <time>Day 3</time>
+              <div>
+                <h3>근교 이동</h3>
+                <p>가마쿠라 또는 요코하마 당일치기 일정</p>
+              </div>
+            </article>
+          </div>
+
+          <section class="lodging-panel" aria-label="숙소 위치">
+            <div class="lodging-card">
+              <div>
+                <p class="section-kicker">Stay</p>
+                <h3 data-lodging-name>숙소 미등록</h3>
+                <p data-lodging-address>숙소 위치를 등록해주세요.</p>
+              </div>
+              <button class="primary-button" type="button" data-open-lodging-route disabled>
+                현재 위치에서 길찾기
+              </button>
+            </div>
+
+            <form class="lodging-form" data-lodging-form>
+              <label>
+                <span>숙소 이름</span>
+                <input
+                  type="text"
+                  name="lodgingName"
+                  placeholder="예: 오사카 난바 호텔"
+                  required
+                />
+              </label>
+              <label>
+                <span>숙소 주소 또는 장소명</span>
+                <input
+                  type="text"
+                  name="lodgingAddress"
+                  placeholder="예: Namba, Osaka"
+                  required
+                />
+              </label>
+              <button class="primary-button" type="submit">저장하고 지도 열기</button>
+            </form>
+          </section>
+        </section>
+
+        <section class="tab-panel" id="flight" data-panel="flight">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Flight</p>
+              <h2>비행기 일정표</h2>
+            </div>
+            <button class="ghost-button" type="button" data-edit-flight>항공편 수정</button>
+          </div>
+
+          <div class="flight-layout">
+            <article class="countdown-card">
+              <span data-active-flight-label>출국 탑승 예정일</span>
+              <h3 data-flight-date>2026. 06. 10. 09:30</h3>
+              <p data-flight-message>남은 시간을 계산하고 있어요.</p>
+            </article>
+            <article class="flight-card" data-active-flight-card>
+              <span class="flight-badge" data-active-flight-badge>출국편</span>
+              <div>
+                <span>출발</span>
+                <strong data-flight-from-code>ICN</strong>
+                <p data-flight-from-name>인천국제공항</p>
+                <time data-flight-departure-time>2026. 06. 10. 09:30</time>
+              </div>
+              <div class="flight-line" aria-hidden="true"></div>
+              <div>
+                <span>도착</span>
+                <strong data-flight-to-code>KIX</strong>
+                <p data-flight-to-name>간사이국제공항</p>
+                <time data-flight-arrival-time>2026. 06. 10. 11:50</time>
+              </div>
+            </article>
+          </div>
+
+          <div class="roundtrip-list" aria-label="왕복 항공편">
+            <article data-outbound-summary>
+              <span>출국편</span>
+              <strong>ICN → KIX</strong>
+              <p>인천국제공항에서 간사이국제공항으로 이동</p>
+              <time data-outbound-time>06.10 09:30 - 06.10 11:50</time>
+            </article>
+            <article data-return-summary>
+              <span>귀국편</span>
+              <strong>KIX → ICN</strong>
+              <p>간사이국제공항에서 인천국제공항으로 이동</p>
+              <time data-return-time>06.14 18:20 - 06.14 20:15</time>
+            </article>
+          </div>
+
+          <form class="flight-form" data-flight-form hidden>
+            <fieldset>
+              <legend>출국편</legend>
+              <label>
+                <span>출발 일시</span>
+                <input type="datetime-local" name="outboundDepartureDateTime" required />
+              </label>
+              <label>
+                <span>도착 일시</span>
+                <input type="datetime-local" name="outboundArrivalDateTime" required />
+              </label>
+              <label>
+                <span>출발 코드</span>
+                <input type="text" name="outboundFromCode" maxlength="4" required />
+              </label>
+              <label>
+                <span>출발 공항</span>
+                <input type="text" name="outboundFromName" required />
+              </label>
+              <label>
+                <span>도착 코드</span>
+                <input type="text" name="outboundToCode" maxlength="4" required />
+              </label>
+              <label>
+                <span>도착 공항</span>
+                <input type="text" name="outboundToName" required />
+              </label>
+            </fieldset>
+            <fieldset>
+              <legend>귀국편</legend>
+              <label>
+                <span>출발 일시</span>
+                <input type="datetime-local" name="returnDepartureDateTime" required />
+              </label>
+              <label>
+                <span>도착 일시</span>
+                <input type="datetime-local" name="returnArrivalDateTime" required />
+              </label>
+              <label>
+                <span>출발 코드</span>
+                <input type="text" name="returnFromCode" maxlength="4" required />
+              </label>
+              <label>
+                <span>출발 공항</span>
+                <input type="text" name="returnFromName" required />
+              </label>
+              <label>
+                <span>도착 코드</span>
+                <input type="text" name="returnToCode" maxlength="4" required />
+              </label>
+              <label>
+                <span>도착 공항</span>
+                <input type="text" name="returnToName" required />
+              </label>
+            </fieldset>
+            <div class="form-actions">
+              <button class="ghost-button" type="button" data-cancel-flight>취소</button>
+              <button class="primary-button" type="submit">저장</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="tab-panel" id="dictionary" data-panel="dictionary">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Phrasebook</p>
+              <h2>여행 일본어 사전</h2>
+            </div>
+            <label class="search-box">
+              <span>검색</span>
+              <input type="search" placeholder="예: 화장실, 계산, 역" data-search />
+            </label>
+          </div>
+
+          <div class="phrase-list" data-phrase-list>
+            <article data-keywords="안녕하세요 인사">
+              <span>인사</span>
+              <h3>こんにちは</h3>
+              <p>안녕하세요</p>
+            </article>
+            <article data-keywords="감사 고마워">
+              <span>기본</span>
+              <h3>ありがとうございます</h3>
+              <p>감사합니다</p>
+            </article>
+            <article data-keywords="화장실 어디">
+              <span>길찾기</span>
+              <h3>トイレはどこですか</h3>
+              <p>화장실은 어디인가요?</p>
+            </article>
+            <article data-keywords="계산 결제 얼마">
+              <span>식당</span>
+              <h3>お会計お願いします</h3>
+              <p>계산 부탁드립니다</p>
+            </article>
+            <article data-keywords="역 전철 지하철">
+              <span>교통</span>
+              <h3>駅はどこですか</h3>
+              <p>역은 어디인가요?</p>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="./src/main.js"></script>
   </body>
 </html>
