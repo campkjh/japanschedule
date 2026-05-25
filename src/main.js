@@ -52,9 +52,7 @@ const QR_STORAGE_KEY = "japanScheduleVisitJapanQrs";
 const qrState = {
   items: [],
   storageMode: "checking",
-  scanStream: null,
-  scanFrame: null,
-  detector: null,
+  pendingImage: null,
 };
 
 const itineraryDays = [
@@ -454,12 +452,18 @@ const itineraryMapQueries = {
 const tabButtons = document.querySelectorAll("[data-tab]");
 const panels = document.querySelectorAll("[data-panel]");
 const qrList = document.querySelector("[data-qr-list]");
-const qrManualForm = document.querySelector("[data-qr-manual-form]");
-const qrStartScan = document.querySelector("[data-start-qr-scan]");
-const qrStopScan = document.querySelector("[data-stop-qr-scan]");
-const qrVideo = document.querySelector("[data-qr-video]");
+const qrAddButton = document.querySelector("[data-add-qr-image]");
+const qrFileInput = document.querySelector("[data-qr-file-input]");
 const qrStatus = document.querySelector("[data-qr-status]");
 const qrStorageMode = document.querySelector("[data-qr-storage-mode]");
+const qrLabelDialog = document.querySelector("[data-qr-label-dialog]");
+const qrLabelForm = document.querySelector("[data-qr-label-form]");
+const qrLabelPreview = document.querySelector("[data-qr-label-preview]");
+const qrLabelCancel = document.querySelector("[data-qr-label-cancel]");
+const qrViewDialog = document.querySelector("[data-qr-view-dialog]");
+const qrViewImage = document.querySelector("[data-qr-view-image]");
+const qrViewLabel = document.querySelector("[data-qr-view-label]");
+const qrViewClose = document.querySelector("[data-qr-view-close]");
 const itineraryList = document.querySelector("[data-itinerary-list]");
 const flightForm = document.querySelector("[data-flight-form]");
 const editFlight = document.querySelector("[data-edit-flight]");
@@ -535,53 +539,13 @@ function createQrId() {
   return `qr-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
-function drawQr(canvas, payload) {
-  if (window.QRCode?.toCanvas) {
-    window.QRCode.toCanvas(
-      canvas,
-      payload,
-      {
-        errorCorrectionLevel: "M",
-        margin: 2,
-        scale: 6,
-        width: 164,
-        color: {
-          dark: "#23191c",
-          light: "#ffffff",
-        },
-      },
-      (error) => {
-        if (error) {
-          drawQrFallback(canvas);
-        }
-      },
-    );
-    return;
-  }
-
-  drawQrFallback(canvas);
-}
-
-function drawQrFallback(canvas) {
-  const context = canvas.getContext("2d");
-  context.fillStyle = "#ffffff";
-  context.fillRect(0, 0, canvas.width, canvas.height);
-  context.fillStyle = "#ff7070";
-  context.fillRect(18, 18, 46, 46);
-  context.fillRect(100, 18, 46, 46);
-  context.fillRect(18, 100, 46, 46);
-  context.fillStyle = "#23191c";
-  context.font = "16px sans-serif";
-  context.fillText("QR", 70, 88);
-}
-
 function renderQrList() {
   qrList.replaceChildren();
 
   if (qrState.items.length === 0) {
     const empty = document.createElement("article");
     empty.className = "empty-qr-card";
-    empty.textContent = "저장된 QR이 아직 없습니다.";
+    empty.textContent = "저장된 QR이 아직 없어요. + 버튼으로 캡쳐본을 추가하세요.";
     qrList.append(empty);
     return;
   }
@@ -590,10 +554,16 @@ function renderQrList() {
     const card = document.createElement("article");
     card.className = "saved-qr-card";
 
-    const canvas = document.createElement("canvas");
-    canvas.width = 164;
-    canvas.height = 164;
-    canvas.setAttribute("aria-label", `${item.label} QR`);
+    const figure = document.createElement("button");
+    figure.type = "button";
+    figure.className = "saved-qr-thumb";
+    figure.setAttribute("aria-label", `${item.label} 크게 보기`);
+    const image = document.createElement("img");
+    image.src = item.payload;
+    image.alt = `${item.label} QR 캡쳐본`;
+    image.loading = "lazy";
+    figure.append(image);
+    figure.addEventListener("click", () => openQrViewer(item));
 
     const body = document.createElement("div");
     const title = document.createElement("h3");
@@ -607,21 +577,14 @@ function renderQrList() {
         }).format(new Date(item.createdAt))
       : "방금 저장됨";
 
-    const payload = document.createElement("p");
-    payload.className = "qr-payload-preview";
-    payload.textContent = item.payload;
-
     const actions = document.createElement("div");
     actions.className = "qr-card-actions";
 
-    const copy = document.createElement("button");
-    copy.className = "ghost-button";
-    copy.type = "button";
-    copy.textContent = "내용 복사";
-    copy.addEventListener("click", async () => {
-      await navigator.clipboard.writeText(item.payload);
-      setQrStatus("QR 내용이 복사됐습니다.");
-    });
+    const view = document.createElement("button");
+    view.className = "ghost-button";
+    view.type = "button";
+    view.textContent = "크게 보기";
+    view.addEventListener("click", () => openQrViewer(item));
 
     const remove = document.createElement("button");
     remove.className = "ghost-button danger-button";
@@ -629,12 +592,35 @@ function renderQrList() {
     remove.textContent = "삭제";
     remove.addEventListener("click", () => deleteQrItem(item.id));
 
-    actions.append(copy, remove);
-    body.append(title, meta, payload, actions);
-    card.append(canvas, body);
+    actions.append(view, remove);
+    body.append(title, meta, actions);
+    card.append(figure, body);
     qrList.append(card);
-    drawQr(canvas, item.payload);
   });
+}
+
+function openQrViewer(item) {
+  if (!qrViewDialog) return;
+  qrViewImage.src = item.payload;
+  qrViewImage.alt = `${item.label} QR 캡쳐본`;
+  qrViewLabel.textContent = item.label;
+  qrViewDialog.showModal();
+}
+
+async function readImageAsDataUrl(file) {
+  const maxDim = 1400;
+  const quality = 0.9;
+  const bitmap = await createImageBitmap(file);
+  const ratio = Math.min(1, maxDim / Math.max(bitmap.width, bitmap.height));
+  const width = Math.round(bitmap.width * ratio);
+  const height = Math.round(bitmap.height * ratio);
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext("2d");
+  context.drawImage(bitmap, 0, 0, width, height);
+  bitmap.close?.();
+  return canvas.toDataURL("image/jpeg", quality);
 }
 
 async function loadQrItems() {
@@ -658,20 +644,18 @@ async function loadQrItems() {
   renderQrList();
 }
 
-async function saveQrItem(payload, label = "Visit Japan QR") {
-  const trimmedPayload = payload.trim();
-
-  if (!trimmedPayload) {
-    setQrStatus("저장할 QR 내용이 없습니다.");
+async function saveQrItem(payload, label) {
+  if (!payload) {
+    setQrStatus("저장할 이미지가 없어요.");
     return;
   }
 
-  const existing = qrState.items.find((item) => item.payload === trimmedPayload);
+  const trimmedLabel = (label || "").trim() || "Visit Japan QR";
   const item = {
-    id: existing?.id || createQrId(),
-    label: label.trim() || "Visit Japan QR",
-    payload: trimmedPayload,
-    createdAt: existing?.createdAt || new Date().toISOString(),
+    id: createQrId(),
+    label: trimmedLabel,
+    payload,
+    createdAt: new Date().toISOString(),
   };
 
   if (qrState.storageMode === "db") {
@@ -692,7 +676,7 @@ async function saveQrItem(payload, label = "Visit Japan QR") {
         saved,
         ...qrState.items.filter((current) => current.id !== saved.id),
       ];
-      setQrStatus("QR이 Vercel DB에 저장됐습니다.");
+      setQrStatus(`"${trimmedLabel}" 캡쳐본을 Vercel DB에 저장했어요.`);
       renderQrList();
       return;
     } catch {
@@ -702,7 +686,7 @@ async function saveQrItem(payload, label = "Visit Japan QR") {
 
   qrState.items = [item, ...qrState.items.filter((current) => current.id !== item.id)];
   setStoredQrItems(qrState.items);
-  setQrStatus("QR이 로컬에 임시 저장됐습니다.");
+  setQrStatus(`"${trimmedLabel}" 캡쳐본을 이 기기에 저장했어요.`);
   renderQrList();
 }
 
@@ -722,80 +706,52 @@ async function deleteQrItem(id) {
   renderQrList();
 }
 
-function stopQrScan() {
-  if (qrState.scanFrame) {
-    cancelAnimationFrame(qrState.scanFrame);
-  }
-
-  qrState.scanStream?.getTracks().forEach((track) => track.stop());
-  qrState.scanStream = null;
-  qrState.scanFrame = null;
-  qrVideo.hidden = true;
-  qrVideo.srcObject = null;
-  qrStartScan.hidden = false;
-  qrStopScan.hidden = true;
-}
-
-async function scanQrFrame() {
-  if (!qrState.detector || !qrState.scanStream) {
-    return;
-  }
-
-  try {
-    const codes = await qrState.detector.detect(qrVideo);
-
-    if (codes.length > 0) {
-      const payload = codes[0].rawValue;
-      stopQrScan();
-      await saveQrItem(payload, "Visit Japan QR");
-      setQrStatus("QR을 읽고 같은 QR을 다시 생성했습니다.");
-      return;
-    }
-  } catch {
-    setQrStatus("QR을 읽는 중입니다. QR을 화면 중앙에 맞춰주세요.");
-  }
-
-  qrState.scanFrame = requestAnimationFrame(scanQrFrame);
-}
-
-async function startQrScan() {
-  if (!("BarcodeDetector" in window)) {
-    setQrStatus("이 브라우저는 QR 카메라 인식을 지원하지 않습니다. 직접 저장을 사용해주세요.");
-    return;
-  }
-
-  try {
-    qrState.detector = new window.BarcodeDetector({ formats: ["qr_code"] });
-    qrState.scanStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: "environment" },
-      audio: false,
-    });
-    qrVideo.srcObject = qrState.scanStream;
-    qrVideo.hidden = false;
-    qrStartScan.hidden = true;
-    qrStopScan.hidden = false;
-    await qrVideo.play();
-    setQrStatus("QR을 카메라 화면 중앙에 맞춰주세요.");
-    scanQrFrame();
-  } catch {
-    setQrStatus("카메라를 열 수 없습니다. 권한을 확인하거나 직접 저장을 사용해주세요.");
-    stopQrScan();
-  }
-}
-
-qrManualForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  saveQrItem(
-    qrManualForm.elements.qrPayload.value,
-    qrManualForm.elements.qrLabel.value,
-  );
-  qrManualForm.elements.qrPayload.value = "";
+qrAddButton?.addEventListener("click", () => {
+  qrFileInput?.click();
 });
 
-qrStartScan.addEventListener("click", startQrScan);
-qrStopScan.addEventListener("click", () => {
-  stopQrScan();
-  setQrStatus("스캔을 중지했습니다.");
+qrFileInput?.addEventListener("change", async () => {
+  const file = qrFileInput.files?.[0];
+  qrFileInput.value = "";
+
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    setQrStatus("이미지 파일만 추가할 수 있어요.");
+    return;
+  }
+
+  try {
+    const dataUrl = await readImageAsDataUrl(file);
+    qrState.pendingImage = dataUrl;
+    if (qrLabelPreview) qrLabelPreview.src = dataUrl;
+    if (qrLabelForm) qrLabelForm.elements.qrLabel.value = "";
+    qrLabelDialog?.showModal();
+    setTimeout(() => qrLabelForm?.elements.qrLabel.focus(), 60);
+  } catch {
+    setQrStatus("이미지를 불러오지 못했어요. 다른 파일을 선택해주세요.");
+  }
+});
+
+qrLabelCancel?.addEventListener("click", () => {
+  qrState.pendingImage = null;
+  qrLabelDialog?.close();
+});
+
+qrLabelForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const label = qrLabelForm.elements.qrLabel.value;
+  const image = qrState.pendingImage;
+  qrState.pendingImage = null;
+  qrLabelDialog?.close();
+  if (image) {
+    await saveQrItem(image, label);
+  }
+});
+
+qrViewClose?.addEventListener("click", () => qrViewDialog?.close());
+qrViewDialog?.addEventListener("click", (event) => {
+  if (event.target === qrViewDialog) qrViewDialog.close();
 });
 
 async function openRouteToDestination(destination) {

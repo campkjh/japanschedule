@@ -50,48 +50,29 @@
             </div>
           </div>
 
-          <div class="qr-workspace">
-            <section class="qr-scanner-card">
-              <div>
-                <h3>QR 스캔</h3>
-                <p>
-                  비짓재팬 QR을 카메라로 스캔하면 내용이 저장되고 같은 QR이 다시 생성됩니다.
-                </p>
-              </div>
-              <video class="qr-video" data-qr-video muted playsinline hidden></video>
-              <div class="qr-actions">
-                <button class="primary-button" type="button" data-start-qr-scan>
-                  카메라로 스캔
-                </button>
-                <button class="ghost-button" type="button" data-stop-qr-scan hidden>
-                  스캔 중지
-                </button>
-              </div>
-              <p class="qr-status" data-qr-status>
-                카메라 권한을 허용하면 QR을 읽을 수 있어요.
-              </p>
-            </section>
-
-            <form class="qr-manual-card" data-qr-manual-form>
-              <div>
-                <h3>직접 저장</h3>
-                <p>카메라 인식이 안 되면 QR 내용을 붙여넣어도 됩니다.</p>
-              </div>
-              <label>
-                <span>이름</span>
-                <input type="text" name="qrLabel" value="Visit Japan QR" required />
-              </label>
-              <label>
-                <span>QR 내용</span>
-                <textarea
-                  name="qrPayload"
-                  placeholder="스캔된 QR 텍스트 또는 URL"
-                  required
-                ></textarea>
-              </label>
-              <button class="primary-button" type="submit">저장하고 QR 생성</button>
-            </form>
+          <div class="visit-actions">
+            <a
+              class="primary-button visit-link-button"
+              href="https://www.vjw.digital.go.jp/main/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              비짓재팬 웹 열기
+            </a>
+            <button class="ghost-button" type="button" data-add-qr-image>
+              <span class="plus-icon" aria-hidden="true">+</span>
+              <span>QR 캡쳐 추가</span>
+            </button>
           </div>
+          <p class="qr-status" data-qr-status>
+            갤러리에서 QR 캡쳐본을 골라 별칭과 함께 저장해두세요.
+          </p>
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            data-qr-file-input
+          />
 
           <div class="qr-library">
             <div class="qr-library-head">
@@ -100,6 +81,49 @@
             </div>
             <div class="saved-qr-list" data-qr-list></div>
           </div>
+
+          <dialog class="qr-label-dialog" data-qr-label-dialog>
+            <form data-qr-label-form method="dialog">
+              <h3>별칭을 입력하세요</h3>
+              <p>이 QR 캡쳐본을 어떤 이름으로 저장할까요?</p>
+              <div class="qr-label-preview">
+                <img alt="" data-qr-label-preview />
+              </div>
+              <label>
+                <span>별칭</span>
+                <input
+                  type="text"
+                  name="qrLabel"
+                  required
+                  maxlength="40"
+                  placeholder="예: 본인 QR"
+                />
+              </label>
+              <div class="qr-dialog-actions">
+                <button
+                  type="button"
+                  class="ghost-button"
+                  data-qr-label-cancel
+                >
+                  취소
+                </button>
+                <button type="submit" class="primary-button">저장</button>
+              </div>
+            </form>
+          </dialog>
+
+          <dialog class="qr-view-dialog" data-qr-view-dialog>
+            <button
+              type="button"
+              class="qr-view-close"
+              data-qr-view-close
+              aria-label="닫기"
+            >
+              ×
+            </button>
+            <img alt="" data-qr-view-image />
+            <p data-qr-view-label></p>
+          </dialog>
         </section>
 
         <section class="tab-panel" id="schedule" data-panel="schedule">
@@ -310,7 +334,6 @@
         <strong data-floating-lodging-name>오사카 코코네 하우스 난바점</strong>
       </button>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
-    <script type="module" src="./src/main.js?v=20260526-lodging-route"></script>
+    <script type="module" src="./src/main.js?v=20260526-qr-gallery"></script>
   </body>
 </html>
