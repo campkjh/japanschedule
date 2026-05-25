@@ -1,15 +1,15 @@
 const flightState = {
   outbound: {
-    departureDateTime: "2026-06-10T09:30",
-    arrivalDateTime: "2026-06-10T11:50",
+    departureDateTime: "2026-06-05T09:00",
+    arrivalDateTime: "2026-06-05T11:00",
     fromCode: "ICN",
     fromName: "인천국제공항",
     toCode: "KIX",
     toName: "간사이국제공항",
   },
   return: {
-    departureDateTime: "2026-06-14T18:20",
-    arrivalDateTime: "2026-06-14T20:15",
+    departureDateTime: "2026-06-08T13:00",
+    arrivalDateTime: "2026-06-08T15:00",
     fromCode: "KIX",
     fromName: "간사이국제공항",
     toCode: "ICN",
@@ -26,13 +26,408 @@ function loadStoredLodging() {
 }
 
 const lodgingState = {
-  name: "",
-  address: "",
+  name: "오사카 코코네 하우스 난바점",
+  address: "오사카 코코네 하우스 난바점",
   ...loadStoredLodging(),
+};
+
+const itineraryDays = [
+  {
+    date: "6월 5일",
+    title: "오사카 도착 · 난바 · 오사카성 · 우메다",
+    items: [
+      {
+        time: "09:00",
+        title: "인천국제공항 보딩",
+        note: "간사이국제공항으로 출발 준비",
+      },
+      {
+        time: "11:00",
+        title: "간사이국제공항 도착",
+        note: "입국 후 수하물 찾기 동선으로 이동",
+      },
+      {
+        time: "11:00~11:40",
+        title: "수하물 찾기 및 이미그레이션",
+        note: "입국 심사와 수하물 수령",
+      },
+      {
+        time: "11:40~12:00",
+        title: "교통카드 발급 및 특급권 예매",
+        note: "스이카/이코카 카드 발급, 라피트 또는 하루카 익스프레스 예매 후 탑승",
+      },
+      {
+        time: "12:00~13:10",
+        title: "간사이국제공항에서 난카이 난바 이동",
+        note: "공항에서 난바로 이동. 이동 방법은 참고 링크 확인",
+        extraLinks: [
+          {
+            label: "공항→난바 이동 방법",
+            url: "https://blog.naver.com/hangeuland/224292528219",
+          },
+        ],
+      },
+      {
+        time: "13:10~13:30",
+        title: "난카이 난바에서 숙소 도보 이동",
+        note: "오사카 코코네 하우스 난바점으로 이동",
+      },
+      {
+        time: "13:30~13:50",
+        title: "짐 보관",
+        note: "숙소에 짐 맡기기",
+      },
+      {
+        time: "13:50~14:30",
+        title: "늦은 점심 - 스시로 도톤보리점",
+        note: "회전초밥. 문어 튀김, 치즈 튀김, 광어지느러미 초밥 추천",
+        mapUrl: "https://maps.app.goo.gl/VBYzbD1CUHuF6EYL8",
+      },
+      {
+        time: "14:30~15:20",
+        title: "도톤보리 구경",
+        note: "첫날 난바 주변 산책",
+      },
+      {
+        time: "15:20~15:50",
+        title: "오사카성으로 이동",
+        note: "도톤보리에서 오사카성 방향",
+      },
+      {
+        time: "15:50~16:40",
+        title: "오사카성 구경",
+        note: "니시노마루 정원. 더우면 공원 전기차 추천. 주요 거점 배차 약 10분, 대인 300엔",
+      },
+      {
+        time: "16:40~17:00",
+        title: "기타하마로 이동",
+        note: "오사카성에서 카페로 이동",
+      },
+      {
+        time: "17:00~17:40",
+        title: "기타하마 레트로 카페",
+        note: "나카노시마 장미원 뷰. 만석이면 노스쇼어 대안 추천",
+        mapUrl: "https://maps.app.goo.gl/vbxFJQ2SKyE1s31w9",
+        extraLinks: [
+          {
+            label: "노스쇼어",
+            query: "노스쇼어 기타하마 오사카",
+            url: "https://maps.app.goo.gl/JcxftFSeHN64dNPq8",
+          },
+        ],
+      },
+      {
+        time: "17:40~18:10",
+        title: "우메다 스카이로 이동",
+        note: "노을 시간 맞춰 이동",
+      },
+      {
+        time: "18:10~19:00",
+        title: "우메다 스카이 노을뷰",
+        note: "전망대에서 일몰 감상",
+      },
+      {
+        time: "19:00~19:20",
+        title: "저녁 식당으로 이동",
+        note: "야키니쿠 하나미치로 이동",
+      },
+      {
+        time: "19:20~20:40",
+        title: "저녁 식사 - 야키니쿠 하나미치",
+        note: "첫날 저녁",
+        mapUrl: "https://maps.app.goo.gl/Pt79KTG7kzExaVAX6",
+      },
+      {
+        time: "20:40~21:10",
+        title: "숙소로 이동",
+        note: "오사카 코코네 하우스 난바점 복귀",
+      },
+    ],
+  },
+  {
+    date: "6월 6일",
+    title: "신세카이 · 덴덴타운 · 난바 · 이즈미사노 불꽃축제",
+    items: [
+      {
+        time: "09:00~10:20",
+        title: "아침 준비",
+        note: "외출 준비",
+      },
+      {
+        time: "10:20~10:40",
+        title: "아침 식사 장소로 이동",
+        note: "숙소에서 이동",
+      },
+      {
+        time: "10:40~11:30",
+        title: "아침 식사 - 무겐라멘 난바 본점",
+        note: "무겐라멘 난바 본점에서 아침 식사",
+        mapQuery: "무겐라멘 난바 본점",
+        mapUrl: "https://maps.app.goo.gl/T9dHXWdo4bKjGRc17",
+      },
+      {
+        time: "11:30~11:50",
+        title: "신세카이로 이동",
+        note: "신이마미야에키마에 방향",
+      },
+      {
+        time: "11:50~12:20",
+        title: "신세카이 구경",
+        note: "츠텐카쿠 주변 산책",
+      },
+      {
+        time: "12:20~12:50",
+        title: "덴덴타운 전기상가로 이동",
+        note: "신세카이에서 덴덴타운 방향",
+      },
+      {
+        time: "12:50~13:20",
+        title: "덴덴타운 구경",
+        note: "전기상가 둘러보기",
+      },
+      {
+        time: "13:20~14:10",
+        title: "Kopimal coffee",
+        note: "레트로 카페",
+        mapUrl: "https://maps.app.goo.gl/f2Mf4jBAQQpSWAGaA",
+      },
+      {
+        time: "14:10~14:20",
+        title: "카페에서 식당으로 이동",
+        note: "점심 식사 장소로 이동",
+        mapQuery: "규카츠 토미타 오사카",
+      },
+      {
+        time: "14:20~15:20",
+        title: "점심 식사 - 규카츠 토미타",
+        note: "규카츠 점심",
+        mapUrl: "https://maps.app.goo.gl/75nQHk4VZktHfQGEA",
+      },
+      {
+        time: "15:40~16:00",
+        title: "난바파크스에서 도톤보리 이동",
+        note: "난바 일대 산책",
+      },
+      {
+        time: "16:00~16:30",
+        title: "도톤보리 2일차",
+        note: "도톤보리 주변 추가 구경",
+      },
+      {
+        time: "16:30~16:50",
+        title: "숙소로 이동",
+        note: "휴식 전 복귀",
+      },
+      {
+        time: "16:50~18:00",
+        title: "휴식",
+        note: "숙소에서 쉬기",
+      },
+      {
+        time: "18:00~19:00",
+        title: "이즈미사노시로 이동",
+        note: "숙소에서 린쿠 마블 비치 방향",
+      },
+      {
+        time: "19:00~20:10",
+        title: "이즈미사노시 린쿠 마블 비치 불꽃축제",
+        note: "해변 불꽃축제 관람",
+      },
+      {
+        time: "20:10~20:20",
+        title: "저녁 식당으로 이동",
+        note: "Yutaro Sushi로 이동",
+        mapQuery: "Yutaro Sushi Izumisano",
+      },
+      {
+        time: "20:20~21:20",
+        title: "저녁 식사 - Yutaro Sushi",
+        note: "이즈미사노 저녁",
+        mapUrl: "https://maps.app.goo.gl/utT7gqsheEm9k3dW9",
+      },
+      {
+        time: "21:20~22:20",
+        title: "숙소로 이동",
+        note: "오사카 숙소 복귀",
+      },
+    ],
+  },
+  {
+    date: "6월 7일",
+    title: "교토 이동 · 기온 · 기요미즈데라 · 후시미 이나리",
+    items: [
+      {
+        time: "09:00~10:20",
+        title: "아침 준비 및 체크아웃",
+        note: "오사카 숙소 체크아웃",
+      },
+      {
+        time: "10:20~11:40",
+        title: "교토로 출발",
+        note: "에키벤토로 아침 해결 후 교토역 도착. 난바에서 교토로 갈 때 우메다는 무조건 피하기. 우메다는 오사카역과 붙어 있고 너무 복잡해서 길 잃기 쉬우니 일반 한큐라인 또는 JR 추천",
+      },
+      {
+        time: "11:40~12:40",
+        title: "점심 식사 - 但馬屋PREMIUM 京都駅八条口店",
+        note: "스키야키 점심",
+        mapUrl: "https://maps.app.goo.gl/qdsYwBsZRoCwFSob6",
+      },
+      {
+        time: "12:40~13:00",
+        title: "택시 이동 및 짐 보관",
+        note: "교토우메코지카덴교 쪽으로 이동 후 짐 보관",
+      },
+      {
+        time: "13:00~13:30",
+        title: "기온시조역으로 이동",
+        note: "숙소에서 기온시조역 방향",
+      },
+      {
+        time: "13:30~14:10",
+        title: "Cafe Yoshiko",
+        note: "가모강 바로 앞 카페",
+      },
+      {
+        time: "14:10~14:40",
+        title: "니시키 텐만구에서 폰토초 공원쪽 구경",
+        note: "교토 중심 산책",
+      },
+      {
+        time: "14:40~15:10",
+        title: "기요미즈데라 인력거 체험",
+        note: "2인 약 30분, 대략 1만엔",
+      },
+      {
+        time: "15:10~15:50",
+        title: "니넨자카, 산넨자카, 기요미즈데라 구경",
+        note: "기요미즈데라 주변 산책",
+      },
+      {
+        time: "15:50~16:10",
+        title: "교토 스타벅스",
+        note: "유명한 교토 스타벅스 방문",
+        mapUrl: "https://maps.app.goo.gl/4AZk8MNjZGitU7U96",
+      },
+      {
+        time: "16:10~16:30",
+        title: "후시미 이나리 신사로 이동",
+        note: "무리라면 패스 가능",
+      },
+      {
+        time: "16:30~17:10",
+        title: "후시미 이나리 신사 구경",
+        note: "철도샷 포인트 포함",
+      },
+      {
+        time: "17:10~17:50",
+        title: "숙소로 이동",
+        note: "교토 숙소로 복귀",
+        mapQuery: "교토 우메코지 카덴쇼",
+      },
+      {
+        time: "17:50~19:00",
+        title: "체크인, 휴식, 온천",
+        note: "숙소에서 쉬기",
+      },
+      {
+        time: "19:00~20:00",
+        title: "저녁 식사 - 츠지야 우메코지기타점",
+        note: "교토 일정 마무리",
+        mapUrl: "https://maps.app.goo.gl/wRkrSRUtMfmQKcUi7",
+      },
+    ],
+  },
+  {
+    date: "6월 8일",
+    title: "교토역 · 쇼핑 · 간사이국제공항",
+    items: [
+      {
+        time: "07:30~08:30",
+        title: "짐 싸기 및 숙소 아침식사",
+        note: "귀국 준비",
+      },
+      {
+        time: "08:30~08:50",
+        title: "교토역으로 이동",
+        note: "숙소에서 교토역 방향",
+      },
+      {
+        time: "08:50~09:20",
+        title: "돈키호테 쇼핑",
+        note: "마지막 쇼핑",
+        mapUrl: "https://maps.app.goo.gl/pJU2cmYU2GtA8P4x8",
+      },
+      {
+        time: "09:20~11:00",
+        title: "간사이국제공항으로 이동",
+        note: "하루카 익스프레스로 단번에 이동하는지 확인. 도카이도 본선과 오사카 순환선 경로 주의",
+        extraLinks: [
+          {
+            label: "교토→간사이공항 이동 방법",
+            url: "https://blog.naver.com/hgg0e824/224019023955",
+          },
+        ],
+      },
+      {
+        time: "11:00",
+        title: "간사이국제공항 도착",
+        note: "출국 최소 2시간 전 공항 도착 권장. 하루카 익스프레스 약 80분, 리무진 버스 약 90분",
+      },
+    ],
+  },
+];
+
+const itineraryMapQueries = {
+  "인천국제공항 보딩": "인천국제공항 제1터미널",
+  "간사이국제공항 도착": "간사이국제공항",
+  "간사이국제공항에서 난카이 난바 이동": "난카이 난바역",
+  "난카이 난바에서 숙소 도보 이동": "오사카 코코네 하우스 난바점",
+  "짐 보관": "오사카 코코네 하우스 난바점",
+  "늦은 점심 - 스시로 도톤보리점": "스시로 도톤보리점 오사카",
+  "도톤보리 구경": "도톤보리 오사카",
+  "오사카성으로 이동": "오사카성 니시노마루 정원",
+  "오사카성 구경": "오사카성 니시노마루 정원",
+  "기타하마로 이동": "기타하마 오사카",
+  "기타하마 레트로 카페": "기타하마 레트로 오사카",
+  "우메다 스카이로 이동": "우메다 스카이 빌딩",
+  "우메다 스카이 노을뷰": "우메다 스카이 빌딩",
+  "저녁 식당으로 이동": "야키니쿠 하나미치 오사카",
+  "저녁 식사 - 야키니쿠 하나미치": "야키니쿠 하나미치 오사카",
+  "숙소로 이동": "오사카 코코네 하우스 난바점",
+  "아침 식사 - 무겐라멘 난바 본점": "무겐라멘 난바 본점",
+  "신세카이로 이동": "신세카이 오사카",
+  "신세카이 구경": "신세카이 오사카",
+  "덴덴타운 전기상가로 이동": "덴덴타운 오사카",
+  "덴덴타운 구경": "덴덴타운 오사카",
+  "Kopimal coffee": "Kopimal coffee Osaka",
+  "점심 식사 - 규카츠 토미타": "규카츠 토미타 오사카",
+  "난바파크스에서 도톤보리 이동": "난바파크스 오사카",
+  "도톤보리 2일차": "도톤보리 오사카",
+  "이즈미사노시로 이동": "린쿠 마블 비치 이즈미사노",
+  "이즈미사노시 린쿠 마블 비치 불꽃축제": "린쿠 마블 비치 이즈미사노",
+  "저녁 식사 - Yutaro Sushi": "Yutaro Sushi Izumisano",
+  "교토로 출발": "교토역",
+  "점심 식사 - 但馬屋PREMIUM 京都駅八条口店": "但馬屋PREMIUM 京都駅八条口店",
+  "택시 이동 및 짐 보관": "교토 우메코지 카덴쇼",
+  "기온시조역으로 이동": "기온시조역",
+  "Cafe Yoshiko": "Cafe Yoshiko Kyoto",
+  "니시키 텐만구에서 폰토초 공원쪽 구경": "니시키 텐만구 교토",
+  "기요미즈데라 인력거 체험": "기요미즈데라 교토",
+  "니넨자카, 산넨자카, 기요미즈데라 구경": "니넨자카 산넨자카 기요미즈데라",
+  "교토 스타벅스": "스타벅스 교토 니넨자카 야사카 차야",
+  "후시미 이나리 신사로 이동": "후시미 이나리 신사",
+  "후시미 이나리 신사 구경": "후시미 이나리 신사",
+  "체크인, 휴식, 온천": "교토 우메코지 카덴쇼",
+  "저녁 식사 - 츠지야 우메코지기타점": "츠지야 우메코지기타점 교토",
+  "교토역으로 이동": "교토역",
+  "돈키호테 쇼핑": "돈키호테 교토역",
+  "간사이국제공항으로 이동": "간사이국제공항",
+  "간사이국제공항 도착": "간사이국제공항",
 };
 
 const tabButtons = document.querySelectorAll("[data-tab]");
 const panels = document.querySelectorAll("[data-panel]");
+const itineraryList = document.querySelector("[data-itinerary-list]");
 const flightForm = document.querySelector("[data-flight-form]");
 const editFlight = document.querySelector("[data-edit-flight]");
 const cancelFlight = document.querySelector("[data-cancel-flight]");
@@ -56,19 +451,258 @@ const fullDateTime = new Intl.DateTimeFormat("ko-KR", {
   timeZone: "Asia/Seoul",
 });
 
+function activateTab(target) {
+  tabButtons.forEach((item) => {
+    item.classList.toggle("is-active", item.dataset.tab === target);
+  });
+
+  panels.forEach((panel) => {
+    panel.classList.toggle("is-active", panel.dataset.panel === target);
+  });
+
+  localStorage.setItem("japanScheduleActiveTab", target);
+}
+
 tabButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    const target = button.dataset.tab;
-
-    tabButtons.forEach((item) => {
-      item.classList.toggle("is-active", item === button);
-    });
-
-    panels.forEach((panel) => {
-      panel.classList.toggle("is-active", panel.dataset.panel === target);
-    });
+    activateTab(button.dataset.tab);
   });
 });
+
+async function openRouteToDestination(destination) {
+  let mapUrl = buildMapsUrl(destination);
+
+  try {
+    const position = await getCurrentPosition();
+    mapUrl = buildMapsUrl(destination, position);
+  } catch {
+    mapUrl = buildMapsUrl(destination);
+  }
+
+  window.location.href = mapUrl;
+}
+
+function createMapLink(label, url, destination = "") {
+  const link = document.createElement("a");
+  link.className = destination ? "map-link route-link" : "map-link";
+  if (/이동 방법/.test(label)) {
+    link.classList.add("guide-link");
+  }
+  link.href = url;
+  link.textContent = label;
+  link.addEventListener("click", () => {
+    localStorage.setItem("japanScheduleActiveTab", "schedule");
+  });
+
+  if (destination) {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      openRouteToDestination(destination);
+    });
+  }
+
+  return link;
+}
+
+function getMapQuery(item) {
+  return item.mapQuery || itineraryMapQueries[item.title] || "";
+}
+
+function getDayDate(dateLabel) {
+  const match = dateLabel.match(/(\d+)월\s*(\d+)일/);
+  if (!match) {
+    return null;
+  }
+
+  return {
+    month: Number(match[1]) - 1,
+    day: Number(match[2]),
+  };
+}
+
+function getTimeStart(timeLabel) {
+  const match = timeLabel.match(/(\d{1,2}):(\d{2})/);
+  if (!match) {
+    return null;
+  }
+
+  return {
+    hour: Number(match[1]),
+    minute: Number(match[2]),
+  };
+}
+
+function getItineraryInterval(dayLabel, item, nextItem) {
+  const date = getDayDate(dayLabel);
+  const startTime = getTimeStart(item.time);
+
+  if (!date || !startTime) {
+    return null;
+  }
+
+  const start = new Date(
+    2026,
+    date.month,
+    date.day,
+    startTime.hour,
+    startTime.minute,
+  );
+
+  const rangeEndMatch = item.time.match(/~\s*(\d{1,2}):(\d{2})/);
+  let end;
+
+  if (rangeEndMatch) {
+    end = new Date(
+      2026,
+      date.month,
+      date.day,
+      Number(rangeEndMatch[1]),
+      Number(rangeEndMatch[2]),
+    );
+  } else {
+    const nextStartTime = nextItem ? getTimeStart(nextItem.time) : null;
+
+    if (nextStartTime) {
+      end = new Date(
+        2026,
+        date.month,
+        date.day,
+        nextStartTime.hour,
+        nextStartTime.minute,
+      );
+    }
+
+    if (!end || end <= start) {
+      end = new Date(start.getTime() + 30 * 60 * 1000);
+    }
+  }
+
+  return { start, end };
+}
+
+function updateCurrentItineraryHighlight() {
+  const now = new Date();
+
+  document.querySelectorAll("[data-itinerary-start]").forEach((article) => {
+    const start = Number(article.dataset.itineraryStart);
+    const end = Number(article.dataset.itineraryEnd);
+    article.classList.toggle("is-current", now.getTime() >= start && now.getTime() < end);
+  });
+}
+
+function getItineraryEmoji(item) {
+  const text = `${item.title} ${item.note}`;
+
+  if (/공항|보딩|항공|출국|귀국/.test(text)) return "✈️";
+  if (/수하물|짐|체크아웃|짐싸기/.test(text)) return "🧳";
+  if (/라멘/.test(text)) return "🍜";
+  if (/스시|초밥|Sushi/.test(text)) return "🍣";
+  if (/야키니쿠|규카츠/.test(text)) return "🥩";
+  if (/식사|점심|저녁|아침/.test(text)) return "🍽️";
+  if (/카페|coffee|스타벅스|Kopimal|Yoshiko/.test(text)) return "☕";
+  if (/불꽃/.test(text)) return "🎆";
+  if (/오사카성|기요미즈데라|신사|텐만구|니넨자카|산넨자카/.test(text)) return "🏯";
+  if (/우메다|노을|전망/.test(text)) return "🌇";
+  if (/도톤보리|신세카이|덴덴타운|구경|산책/.test(text)) return "📸";
+  if (/쇼핑|돈키호테/.test(text)) return "🛍️";
+  if (/온천|휴식|체크인/.test(text)) return "♨️";
+  if (/인력거/.test(text)) return "🛺";
+  if (/도보/.test(text)) return "🚶";
+  if (/이동|출발|역|택시|하루카|라피트|난카이/.test(text)) return "🚆";
+  if (/준비/.test(text)) return "🌤️";
+
+  return "📍";
+}
+
+function renderItinerary() {
+  itineraryList.replaceChildren();
+
+  itineraryDays.forEach((day) => {
+    const dayGroup = document.createElement("section");
+    dayGroup.className = "day-group";
+
+    const heading = document.createElement("div");
+    heading.className = "day-heading";
+
+    const date = document.createElement("span");
+    date.textContent = day.date;
+
+    const title = document.createElement("h3");
+    title.textContent = day.title;
+
+    heading.append(date, title);
+    dayGroup.append(heading);
+
+    day.items.forEach((item, index) => {
+      const article = document.createElement("article");
+      const interval = getItineraryInterval(day.date, item, day.items[index + 1]);
+
+      if (interval) {
+        article.dataset.itineraryStart = interval.start.getTime();
+        article.dataset.itineraryEnd = interval.end.getTime();
+      }
+
+      const time = document.createElement("time");
+      time.textContent = item.time;
+
+      const content = document.createElement("div");
+      const itemTitle = document.createElement("h4");
+      itemTitle.className = "item-title";
+
+      const emoji = document.createElement("span");
+      emoji.className = "item-emoji";
+      emoji.textContent = getItineraryEmoji(item);
+
+      const titleText = document.createElement("span");
+      titleText.textContent = item.title;
+
+      itemTitle.append(emoji, titleText);
+
+      const note = document.createElement("p");
+      note.textContent = item.note;
+
+      content.append(itemTitle, note);
+
+      const mapQuery = getMapQuery(item);
+
+      if (mapQuery || item.mapUrl || item.extraLinks?.length) {
+        const actions = document.createElement("div");
+        actions.className = "item-actions";
+
+        if (mapQuery) {
+          actions.append(createMapLink("길찾기", buildMapsUrl(mapQuery), mapQuery));
+        }
+
+        if (item.mapUrl) {
+          actions.append(createMapLink("원본 링크", item.mapUrl));
+        }
+
+        item.extraLinks?.forEach((link) => {
+          if (link.query) {
+            actions.append(
+              createMapLink(link.label, buildMapsUrl(link.query), link.query),
+            );
+          }
+
+          if (link.url) {
+            actions.append(
+              createMapLink(link.query ? `${link.label} 원본` : link.label, link.url),
+            );
+          }
+        });
+
+        content.append(actions);
+      }
+
+      article.append(time, content);
+      dayGroup.append(article);
+    });
+
+    itineraryList.append(dayGroup);
+  });
+
+  updateCurrentItineraryHighlight();
+}
 
 function parseKoreanTime(value) {
   return new Date(`${value}:00+09:00`);
@@ -230,6 +864,8 @@ function buildMapsUrl(destination, position) {
   if (position) {
     const { latitude, longitude } = position.coords;
     params.set("origin", `${latitude},${longitude}`);
+  } else {
+    params.set("origin", "Current Location");
   }
 
   return `https://www.google.com/maps/dir/?${params.toString()}`;
@@ -310,4 +946,7 @@ search.addEventListener("input", (event) => {
 
 updateFlightView();
 updateLodgingView();
+renderItinerary();
+activateTab(localStorage.getItem("japanScheduleActiveTab") || "visit");
 setInterval(updateFlightView, 60000);
+setInterval(updateCurrentItineraryHighlight, 60000);

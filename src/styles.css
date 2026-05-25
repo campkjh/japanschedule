@@ -1,9 +1,20 @@
+@font-face {
+  font-family: "Ownglyph_positive";
+  src:
+    local("온글잎 긍정"),
+    local("Ownglyph positive"),
+    url("../assets/fonts/Ownglyph_positive.ttf") format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 100 900;
+}
+
 :root {
-  color: #17212b;
-  background: #eef2f0;
+  color: #6f3440;
+  background: #fff7f8;
   font-family:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+    "Ownglyph_positive", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -32,9 +43,9 @@ button {
   min-height: 100vh;
   padding: 28px;
   background:
-    linear-gradient(140deg, rgba(17, 97, 115, 0.12), transparent 34%),
-    linear-gradient(320deg, rgba(190, 74, 58, 0.14), transparent 40%),
-    #eef2f0;
+    linear-gradient(140deg, rgba(255, 112, 112, 0.16), transparent 34%),
+    linear-gradient(320deg, rgba(255, 196, 205, 0.38), transparent 45%),
+    #fff7f8;
 }
 
 .topbar {
@@ -49,7 +60,7 @@ button {
 .eyebrow,
 .section-kicker {
   margin: 0 0 8px;
-  color: #b24736;
+  color: #ff7070;
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0;
@@ -59,15 +70,19 @@ button {
 h1,
 h2,
 h3,
+h4,
 p {
   margin-top: 0;
 }
 
 h1 {
   margin-bottom: 0;
+  color: #ff7070;
   font-size: clamp(2rem, 5vw, 4.4rem);
+  font-weight: 900;
   line-height: 1;
   letter-spacing: 0;
+  text-shadow: 0.7px 0 0 currentColor;
 }
 
 .trip-chip {
@@ -75,61 +90,72 @@ h1 {
   gap: 4px;
   min-width: 148px;
   padding: 16px 18px;
-  border: 1px solid rgba(23, 33, 43, 0.12);
+  border: 1px solid rgba(255, 112, 112, 0.12);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 12px 26px rgba(255, 112, 112, 0.12);
   text-align: right;
 }
 
 .trip-chip span {
-  color: #5b6670;
+  color: #8b6870;
   font-size: 0.84rem;
 }
 
 .trip-chip strong {
-  color: #116173;
+  color: #ff7070;
   font-size: 1.6rem;
 }
 
 .tabbar {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  display: flex;
+  gap: 6px;
   max-width: 1180px;
   margin: 0 auto 18px;
-  padding: 6px;
-  border: 1px solid rgba(23, 33, 43, 0.1);
+  overflow-x: auto;
+  padding: 5px;
+  border: 1px solid rgba(255, 112, 112, 0.1);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.62);
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.62);
+  scrollbar-width: none;
+}
+
+.tabbar::-webkit-scrollbar {
+  display: none;
 }
 
 .tab-button {
   display: flex;
-  min-height: 58px;
+  min-width: max-content;
+  min-height: 38px;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 6px;
+  padding: 0 12px;
   border: 0;
   border-radius: 6px;
   background: transparent;
-  color: #46535f;
+  color: #8b6870;
+  font-size: 0.88rem;
   font-weight: 800;
 }
 
 .tab-button.is-active {
-  background: #17212b;
+  background: #ff7070;
   color: #ffffff;
-  box-shadow: 0 14px 30px rgba(23, 33, 43, 0.16);
+  box-shadow: 0 14px 30px rgba(255, 112, 112, 0.24);
 }
 
 .tab-icon {
   display: inline-grid;
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
   place-items: center;
   border-radius: 6px;
-  background: rgba(17, 97, 115, 0.12);
-  color: #116173;
+  background: rgba(255, 112, 112, 0.12);
+  color: #ff7070;
+  font-size: 0.78rem;
   font-weight: 900;
 }
 
@@ -147,10 +173,10 @@ main {
   display: none;
   min-height: 590px;
   padding: clamp(22px, 4vw, 42px);
-  border: 1px solid rgba(23, 33, 43, 0.1);
+  border: 1px solid rgba(255, 112, 112, 0.1);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 24px 70px rgba(23, 33, 43, 0.1);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 24px 70px rgba(255, 112, 112, 0.14);
 }
 
 .tab-panel.is-active {
@@ -168,17 +194,19 @@ main {
 .section-head h2 {
   margin-bottom: 0;
   font-size: clamp(1.7rem, 4vw, 3rem);
+  font-weight: 900;
   line-height: 1.08;
   letter-spacing: 0;
+  text-shadow: 0.5px 0 0 currentColor;
 }
 
 .ghost-button {
   min-height: 42px;
   padding: 0 16px;
-  border: 1px solid rgba(23, 33, 43, 0.14);
+  border: 1px solid rgba(255, 112, 112, 0.14);
   border-radius: 6px;
   background: #ffffff;
-  color: #17212b;
+  color: #6f3440;
   font-weight: 800;
 }
 
@@ -187,9 +215,10 @@ main {
   padding: 0 18px;
   border: 0;
   border-radius: 6px;
-  background: #116173;
+  background: #ff7070;
   color: #ffffff;
   font-weight: 900;
+  box-shadow: 0 10px 22px rgba(255, 112, 112, 0.2);
 }
 
 .qr-grid,
@@ -206,9 +235,10 @@ main {
 .lodging-card,
 .lodging-form,
 .phrase-list article {
-  border: 1px solid rgba(23, 33, 43, 0.11);
+  border: 1px solid rgba(255, 112, 112, 0.11);
   border-radius: 8px;
   background: #ffffff;
+  box-shadow: 0 12px 28px rgba(255, 112, 112, 0.08);
 }
 
 .qr-card {
@@ -227,7 +257,7 @@ main {
   gap: 10px;
   padding: 14px;
   border-radius: 8px;
-  background: #17212b;
+  background: #ff7070;
 }
 
 .qr-placeholder span {
@@ -236,18 +266,39 @@ main {
 }
 
 .qr-placeholder span:nth-child(3) {
-  background: #b24736;
+  background: #ff7070;
 }
 
 .qr-placeholder.is-green span:nth-child(3) {
-  background: #116173;
+  background: #ff7070;
 }
 
 .qr-card h3,
-.timeline h3,
+.timeline h4,
 .phrase-list h3 {
   margin-bottom: 8px;
   font-size: 1.35rem;
+  font-weight: 900;
+  text-shadow: 0.35px 0 0 currentColor;
+}
+
+.item-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.item-emoji {
+  display: inline-grid;
+  width: 1.65em;
+  height: 1.65em;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(255, 112, 112, 0.12);
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  font-size: 0.9em;
+  text-shadow: none;
 }
 
 .qr-card p,
@@ -256,7 +307,7 @@ main {
 .flight-card p,
 .countdown-card p {
   margin-bottom: 0;
-  color: #62707a;
+  color: #8b6870;
   line-height: 1.55;
 }
 
@@ -266,25 +317,116 @@ main {
   padding: 7px 10px;
   border-radius: 999px;
   background: rgba(178, 71, 54, 0.1);
-  color: #b24736;
+  color: #ff7070;
   font-size: 0.82rem;
 }
 
 .timeline {
   display: grid;
+  gap: 26px;
+}
+
+.day-group {
+  display: grid;
+  gap: 10px;
+}
+
+.day-heading {
+  display: flex;
+  align-items: baseline;
   gap: 12px;
+  padding: 0 4px 2px;
+}
+
+.day-heading span {
+  color: #ff7070;
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+.day-heading h3 {
+  margin: 0;
+  color: #6f3440;
+  font-size: clamp(1.25rem, 3vw, 1.8rem);
+  font-weight: 900;
+  line-height: 1.2;
+  text-shadow: 0.45px 0 0 currentColor;
 }
 
 .timeline article {
   display: grid;
-  grid-template-columns: 92px minmax(0, 1fr);
-  gap: 18px;
-  padding: 20px;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 10px;
+  column-gap: 10px;
+  padding: 18px;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
 }
 
 .timeline time {
-  color: #116173;
+  color: #ff7070;
   font-weight: 900;
+  white-space: nowrap;
+}
+
+.timeline article.is-current {
+  border-color: rgba(255, 112, 112, 0.88);
+  background: #ff7070;
+  box-shadow: 0 14px 34px rgba(255, 112, 112, 0.28);
+}
+
+.timeline article.is-current time,
+.timeline article.is-current h4,
+.timeline article.is-current p {
+  color: #ffffff;
+}
+
+.timeline article.is-current .route-link {
+  background: #ffffff;
+  color: #ff7070;
+}
+
+.timeline article.is-current .item-emoji {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.timeline article.is-current .map-link:not(.route-link) {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+.item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.map-link {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  padding: 0 11px;
+  border-radius: 6px;
+  background: rgba(255, 112, 112, 0.1);
+  color: #ff7070;
+  font-size: 0.84rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.route-link {
+  background: #ff7070;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(255, 112, 112, 0.22);
+}
+
+.guide-link {
+  background: #23191c;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(35, 25, 28, 0.16);
 }
 
 .lodging-panel {
@@ -304,11 +446,13 @@ main {
 .lodging-card h3 {
   margin-bottom: 8px;
   font-size: 1.35rem;
+  font-weight: 900;
+  text-shadow: 0.35px 0 0 currentColor;
 }
 
 .lodging-card p:last-child {
   margin-bottom: 0;
-  color: #62707a;
+  color: #8b6870;
   line-height: 1.55;
 }
 
@@ -328,7 +472,7 @@ main {
 .lodging-form label {
   display: grid;
   gap: 7px;
-  color: #62707a;
+  color: #8b6870;
   font-size: 0.82rem;
   font-weight: 900;
 }
@@ -337,15 +481,15 @@ main {
   width: 100%;
   min-height: 44px;
   padding: 0 12px;
-  border: 1px solid rgba(23, 33, 43, 0.16);
+  border: 1px solid rgba(255, 112, 112, 0.16);
   border-radius: 6px;
-  background: #f8faf9;
-  color: #17212b;
+  background: #fff6f7;
+  color: #6f3440;
 }
 
 .countdown-card {
   padding: 30px;
-  background: #17212b;
+  background: linear-gradient(135deg, #ff7070, #ff9aa5);
   color: #ffffff;
 }
 
@@ -379,14 +523,14 @@ main {
   right: 16px;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(17, 97, 115, 0.1);
-  color: #116173;
+  background: rgba(255, 112, 112, 0.1);
+  color: #ff7070;
   font-size: 0.78rem;
   font-weight: 900;
 }
 
 .flight-card span {
-  color: #62707a;
+  color: #8b6870;
   font-size: 0.86rem;
   font-weight: 800;
 }
@@ -394,7 +538,7 @@ main {
 .flight-card strong {
   display: block;
   margin: 10px 0 4px;
-  color: #116173;
+  color: #ff7070;
   font-size: 3rem;
   line-height: 1;
 }
@@ -408,7 +552,7 @@ main {
 .flight-line {
   position: relative;
   height: 2px;
-  background: rgba(23, 33, 43, 0.18);
+  background: rgba(255, 112, 112, 0.18);
 }
 
 .flight-line::after {
@@ -417,8 +561,8 @@ main {
   right: -2px;
   width: 10px;
   height: 10px;
-  border-top: 2px solid #17212b;
-  border-right: 2px solid #17212b;
+  border-top: 2px solid #6f3440;
+  border-right: 2px solid #6f3440;
   content: "";
   transform: translateY(-50%) rotate(45deg);
 }
@@ -432,7 +576,7 @@ main {
 
 .roundtrip-list article {
   padding: 18px;
-  border: 1px solid rgba(23, 33, 43, 0.11);
+  border: 1px solid rgba(255, 112, 112, 0.11);
   border-radius: 8px;
   background: #ffffff;
 }
@@ -440,7 +584,7 @@ main {
 .roundtrip-list span {
   display: inline-block;
   margin-bottom: 10px;
-  color: #b24736;
+  color: #ff7070;
   font-size: 0.8rem;
   font-weight: 900;
 }
@@ -448,18 +592,18 @@ main {
 .roundtrip-list strong {
   display: block;
   margin-bottom: 7px;
-  color: #17212b;
+  color: #6f3440;
   font-size: 1.28rem;
 }
 
 .roundtrip-list p {
   margin-bottom: 12px;
-  color: #62707a;
+  color: #8b6870;
   line-height: 1.5;
 }
 
 .roundtrip-list time {
-  color: #116173;
+  color: #ff7070;
   font-weight: 900;
 }
 
@@ -468,7 +612,7 @@ main {
   gap: 14px;
   margin-top: 16px;
   padding: 20px;
-  border: 1px solid rgba(23, 33, 43, 0.11);
+  border: 1px solid rgba(255, 112, 112, 0.11);
   border-radius: 8px;
   background: #ffffff;
 }
@@ -483,20 +627,20 @@ main {
   gap: 14px;
   margin: 0;
   padding: 18px;
-  border: 1px solid rgba(23, 33, 43, 0.1);
+  border: 1px solid rgba(255, 112, 112, 0.1);
   border-radius: 8px;
 }
 
 .flight-form legend {
   padding: 0 6px;
-  color: #116173;
+  color: #ff7070;
   font-weight: 900;
 }
 
 .flight-form label {
   display: grid;
   gap: 7px;
-  color: #62707a;
+  color: #8b6870;
   font-size: 0.82rem;
   font-weight: 900;
 }
@@ -505,10 +649,10 @@ main {
   width: 100%;
   min-height: 44px;
   padding: 0 12px;
-  border: 1px solid rgba(23, 33, 43, 0.16);
+  border: 1px solid rgba(255, 112, 112, 0.16);
   border-radius: 6px;
-  background: #f8faf9;
-  color: #17212b;
+  background: #fff6f7;
+  color: #6f3440;
 }
 
 .form-actions {
@@ -523,7 +667,7 @@ main {
   display: grid;
   gap: 6px;
   min-width: min(320px, 100%);
-  color: #62707a;
+  color: #8b6870;
   font-size: 0.82rem;
   font-weight: 800;
 }
@@ -531,10 +675,10 @@ main {
 .search-box input {
   min-height: 44px;
   padding: 0 13px;
-  border: 1px solid rgba(23, 33, 43, 0.16);
+  border: 1px solid rgba(255, 112, 112, 0.16);
   border-radius: 6px;
   background: #ffffff;
-  color: #17212b;
+  color: #6f3440;
 }
 
 .phrase-list {
@@ -550,7 +694,7 @@ main {
 .phrase-list span {
   display: inline-block;
   margin-bottom: 14px;
-  color: #b24736;
+  color: #ff7070;
   font-size: 0.82rem;
   font-weight: 900;
 }
@@ -570,7 +714,6 @@ main {
     text-align: left;
   }
 
-  .tabbar,
   .qr-grid,
   .flight-layout,
   .lodging-form,
@@ -580,13 +723,8 @@ main {
     grid-template-columns: 1fr;
   }
 
-  .tabbar {
-    gap: 6px;
-  }
-
   .tab-button {
-    justify-content: start;
-    padding: 0 14px;
+    padding: 0 11px;
   }
 
   .tab-panel {
@@ -595,9 +733,12 @@ main {
 
   .qr-card,
   .lodging-card,
-  .timeline article,
   .flight-card {
     grid-template-columns: 1fr;
+  }
+
+  .timeline article {
+    gap: 10px;
   }
 
   .lodging-card {

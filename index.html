@@ -8,14 +8,13 @@
       content="Visit Japan QR, 여행 일정, 비행기 일정표, 여행 일본어 사전을 한곳에 정리하는 앱"
     />
     <title>Japan Schedule</title>
-    <link rel="stylesheet" href="./src/styles.css" />
+    <link rel="stylesheet" href="./src/styles.css?v=20260526-guide-buttons" />
   </head>
   <body>
     <div class="app-shell">
       <header class="topbar">
         <div>
           <p class="eyebrow">Japan Schedule</p>
-          <h1>일본 여행 대시보드</h1>
         </div>
         <div class="trip-chip">
           <span data-countdown-label>출국 탑승까지</span>
@@ -82,32 +81,9 @@
               <p class="section-kicker">Itinerary</p>
               <h2>여행일정</h2>
             </div>
-            <button class="ghost-button" type="button">일정 추가</button>
           </div>
 
-          <div class="timeline">
-            <article>
-              <time>Day 1</time>
-              <div>
-                <h3>도쿄 도착</h3>
-                <p>나리타 공항, 숙소 체크인, 신주쿠 저녁 산책</p>
-              </div>
-            </article>
-            <article>
-              <time>Day 2</time>
-              <div>
-                <h3>시부야와 하라주쿠</h3>
-                <p>카페, 쇼핑, 요요기 공원, 저녁 예약</p>
-              </div>
-            </article>
-            <article>
-              <time>Day 3</time>
-              <div>
-                <h3>근교 이동</h3>
-                <p>가마쿠라 또는 요코하마 당일치기 일정</p>
-              </div>
-            </article>
-          </div>
+          <div class="timeline" data-itinerary-list></div>
 
           <section class="lodging-panel" aria-label="숙소 위치">
             <div class="lodging-card">
@@ -297,6 +273,6 @@
         </section>
       </main>
     </div>
-    <script type="module" src="./src/main.js"></script>
+    <script type="module" src="./src/main.js?v=20260526-guide-buttons"></script>
   </body>
 </html>
