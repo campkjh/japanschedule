@@ -754,6 +754,25 @@ qrViewDialog?.addEventListener("click", (event) => {
   if (event.target === qrViewDialog) qrViewDialog.close();
 });
 
+document.querySelectorAll("[data-copy-text]").forEach((button) => {
+  button.addEventListener("click", async () => {
+    const text = button.dataset.copyText || "";
+    if (!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      const original = button.textContent;
+      button.textContent = "복사됨";
+      button.classList.add("is-copied");
+      setTimeout(() => {
+        button.textContent = original;
+        button.classList.remove("is-copied");
+      }, 1400);
+    } catch {
+      setQrStatus("복사에 실패했어요. 직접 길게 눌러 복사해주세요.");
+    }
+  });
+});
+
 async function openRouteToDestination(destination) {
   let mapUrl = buildMapsUrl(destination);
 

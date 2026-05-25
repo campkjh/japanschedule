@@ -301,6 +301,69 @@ main {
   color: #6f3440;
 }
 
+.lodging-quick {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 18px 20px;
+  border: 1px solid rgba(255, 112, 112, 0.14);
+  border-radius: 10px;
+  background: #fff6f7;
+}
+
+.lodging-quick header {
+  display: grid;
+  gap: 2px;
+}
+
+.lodging-quick h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #23191c;
+}
+
+.lodging-quick-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #ffffff;
+  border: 1px solid rgba(255, 112, 112, 0.12);
+  border-radius: 8px;
+}
+
+.lodging-quick-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lodging-quick-label {
+  color: #8b6870;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.lodging-quick-value {
+  margin: 0;
+  color: #23191c;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
+}
+
+.lodging-quick .ghost-button {
+  flex-shrink: 0;
+  min-width: 64px;
+}
+
+.ghost-button.is-copied {
+  background: rgba(255, 112, 112, 0.18);
+  color: #ff7070;
+}
+
 .qr-library {
   margin-top: 18px;
 }
