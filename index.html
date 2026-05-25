@@ -8,7 +8,7 @@
       content="Visit Japan QR, 여행 일정, 비행기 일정표, 여행 일본어 사전을 한곳에 정리하는 앱"
     />
     <title>Japan Schedule</title>
-    <link rel="stylesheet" href="./src/styles.css?v=20260526-guide-buttons" />
+    <link rel="stylesheet" href="./src/styles.css?v=20260526-qr-db" />
   </head>
   <body>
     <div class="app-shell">
@@ -48,30 +48,57 @@
               <p class="section-kicker">Visit Japan Web</p>
               <h2>비짓재팬 큐알코드 보관함</h2>
             </div>
-            <button class="ghost-button" type="button">QR 추가</button>
           </div>
 
-          <div class="qr-grid">
-            <article class="qr-card">
-              <div class="qr-placeholder" aria-hidden="true">
-                <span></span><span></span><span></span><span></span>
-              </div>
+          <div class="qr-workspace">
+            <section class="qr-scanner-card">
               <div>
-                <h3>입국 심사 QR</h3>
-                <p>여권 정보와 입국 신고 확인용</p>
+                <h3>QR 스캔</h3>
+                <p>
+                  비짓재팬 QR을 카메라로 스캔하면 내용이 저장되고 같은 QR이 다시 생성됩니다.
+                </p>
               </div>
-              <strong>준비 필요</strong>
-            </article>
-            <article class="qr-card">
-              <div class="qr-placeholder is-green" aria-hidden="true">
-                <span></span><span></span><span></span><span></span>
+              <video class="qr-video" data-qr-video muted playsinline hidden></video>
+              <div class="qr-actions">
+                <button class="primary-button" type="button" data-start-qr-scan>
+                  카메라로 스캔
+                </button>
+                <button class="ghost-button" type="button" data-stop-qr-scan hidden>
+                  스캔 중지
+                </button>
               </div>
+              <p class="qr-status" data-qr-status>
+                카메라 권한을 허용하면 QR을 읽을 수 있어요.
+              </p>
+            </section>
+
+            <form class="qr-manual-card" data-qr-manual-form>
               <div>
-                <h3>세관 신고 QR</h3>
-                <p>기내에서 바로 열 수 있게 보관</p>
+                <h3>직접 저장</h3>
+                <p>카메라 인식이 안 되면 QR 내용을 붙여넣어도 됩니다.</p>
               </div>
-              <strong>준비 필요</strong>
-            </article>
+              <label>
+                <span>이름</span>
+                <input type="text" name="qrLabel" value="Visit Japan QR" required />
+              </label>
+              <label>
+                <span>QR 내용</span>
+                <textarea
+                  name="qrPayload"
+                  placeholder="스캔된 QR 텍스트 또는 URL"
+                  required
+                ></textarea>
+              </label>
+              <button class="primary-button" type="submit">저장하고 QR 생성</button>
+            </form>
+          </div>
+
+          <div class="qr-library">
+            <div class="qr-library-head">
+              <h3>저장된 QR</h3>
+              <span data-qr-storage-mode>저장소 확인 중</span>
+            </div>
+            <div class="saved-qr-list" data-qr-list></div>
           </div>
         </section>
 
@@ -273,6 +300,7 @@
         </section>
       </main>
     </div>
-    <script type="module" src="./src/main.js?v=20260526-guide-buttons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+    <script type="module" src="./src/main.js?v=20260526-qr-db"></script>
   </body>
 </html>
