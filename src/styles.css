@@ -626,6 +626,40 @@ main {
   color: #6f3440;
 }
 
+.floating-lodging-route {
+  position: fixed;
+  right: 26px;
+  bottom: 24px;
+  z-index: 20;
+  display: grid;
+  min-width: min(320px, calc(100vw - 36px));
+  gap: 4px;
+  padding: 14px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 8px;
+  background: #ff7070;
+  color: #ffffff;
+  box-shadow: 0 18px 44px rgba(255, 112, 112, 0.32);
+  text-align: left;
+}
+
+.floating-lodging-route[hidden] {
+  display: none;
+}
+
+.floating-lodging-route span {
+  font-size: 0.8rem;
+  font-weight: 800;
+  opacity: 0.88;
+}
+
+.floating-lodging-route strong {
+  font-size: 1.12rem;
+  font-weight: 900;
+  line-height: 1.15;
+  text-shadow: 0.35px 0 0 currentColor;
+}
+
 .countdown-card {
   padding: 30px;
   background: linear-gradient(135deg, #ff7070, #ff9aa5);
@@ -888,6 +922,13 @@ main {
   .lodging-card {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .floating-lodging-route {
+    right: 18px;
+    bottom: 18px;
+    min-width: auto;
+    width: calc(100vw - 36px);
   }
 
   .qr-card strong {

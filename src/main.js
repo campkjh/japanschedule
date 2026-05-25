@@ -17,18 +17,35 @@ const flightState = {
   },
 };
 
-function loadStoredLodging() {
+function loadStoredLodgings() {
   try {
-    return JSON.parse(localStorage.getItem("japanScheduleLodging") || "{}");
+    return JSON.parse(localStorage.getItem("japanScheduleLodgings") || "{}");
   } catch {
     return {};
   }
 }
 
+const defaultLodgings = {
+  osaka: {
+    name: "오사카 코코네 하우스 난바점",
+    address: "오사카 코코네 하우스 난바점",
+    switchAt: "2026-06-05T00:00",
+  },
+  kyoto: {
+    name: "교토 우메코지 카덴쇼",
+    address: "교토 우메코지 카덴쇼",
+    switchAt: "2026-06-07T10:20",
+  },
+};
+
+const storedLodgings = loadStoredLodgings();
+
 const lodgingState = {
-  name: "오사카 코코네 하우스 난바점",
-  address: "오사카 코코네 하우스 난바점",
-  ...loadStoredLodging(),
+  stays: {
+    osaka: { ...defaultLodgings.osaka, ...(storedLodgings.osaka || {}) },
+    kyoto: { ...defaultLodgings.kyoto, ...(storedLodgings.kyoto || {}) },
+  },
+  activeKey: "osaka",
 };
 
 const QR_STORAGE_KEY = "japanScheduleVisitJapanQrs";
@@ -449,6 +466,8 @@ const editFlight = document.querySelector("[data-edit-flight]");
 const cancelFlight = document.querySelector("[data-cancel-flight]");
 const lodgingForm = document.querySelector("[data-lodging-form]");
 const lodgingRoute = document.querySelector("[data-open-lodging-route]");
+const floatingLodgingRoute = document.querySelector("[data-floating-lodging-route]");
+const floatingLodgingName = document.querySelector("[data-floating-lodging-name]");
 const search = document.querySelector("[data-search]");
 const phrases = document.querySelectorAll("[data-phrase-list] article");
 
@@ -477,6 +496,7 @@ function activateTab(target) {
   });
 
   localStorage.setItem("japanScheduleActiveTab", target);
+  updateFloatingLodgingButton();
 }
 
 tabButtons.forEach((button) => {
@@ -897,6 +917,8 @@ function updateCurrentItineraryHighlight() {
     const end = Number(article.dataset.itineraryEnd);
     article.classList.toggle("is-current", now.getTime() >= start && now.getTime() < end);
   });
+
+  updateLodgingView();
 }
 
 function getItineraryEmoji(item) {
@@ -1195,8 +1217,23 @@ function getCurrentPosition() {
   });
 }
 
+function getActiveLodgingKey(now = new Date()) {
+  const kyotoSwitch = parseKoreanTime(defaultLodgings.kyoto.switchAt);
+  return now >= kyotoSwitch ? "kyoto" : "osaka";
+}
+
+function getActiveLodging(now = new Date()) {
+  lodgingState.activeKey = getActiveLodgingKey(now);
+  return lodgingState.stays[lodgingState.activeKey];
+}
+
+function saveStoredLodgings() {
+  localStorage.setItem("japanScheduleLodgings", JSON.stringify(lodgingState.stays));
+}
+
 async function openLodgingRoute() {
-  const destination = lodgingState.address.trim();
+  const lodging = getActiveLodging();
+  const destination = lodging.address.trim();
 
   if (!destination) {
     lodgingForm.elements.lodgingAddress.focus();
@@ -1220,28 +1257,56 @@ async function openLodgingRoute() {
   }
 }
 
+function updateFloatingLodgingButton() {
+  const lodging = getActiveLodging();
+  const hasDestination = Boolean(lodging.address);
+  const isScheduleActive =
+    document.querySelector(".tab-panel.is-active")?.dataset.panel === "schedule";
+
+  floatingLodgingRoute.hidden = !hasDestination || !isScheduleActive;
+  floatingLodgingRoute.disabled = !hasDestination;
+  floatingLodgingName.textContent = lodging.name || "숙소";
+}
+
 function updateLodgingView() {
-  const name = lodgingState.name || "숙소 미등록";
-  const address = lodgingState.address || "숙소 위치를 등록해주세요.";
+  const previousKey = lodgingState.activeKey;
+  const lodging = getActiveLodging();
+  const name = lodging.name || "숙소 미등록";
+  const address = lodging.address || "숙소 위치를 등록해주세요.";
 
   document.querySelector("[data-lodging-name]").textContent = name;
   document.querySelector("[data-lodging-address]").textContent = address;
-  lodgingRoute.disabled = !lodgingState.address;
+  lodgingRoute.disabled = !lodging.address;
+  lodgingRoute.textContent = `${name} 길찾기`;
+
+  const formIsEmpty =
+    !lodgingForm.elements.lodgingName.value &&
+    !lodgingForm.elements.lodgingAddress.value;
+
+  if (previousKey !== lodgingState.activeKey || formIsEmpty) {
+    lodgingForm.elements.lodgingName.value = lodging.name || "";
+    lodgingForm.elements.lodgingAddress.value = lodging.address || "";
+  }
+
+  updateFloatingLodgingButton();
 }
 
 lodgingForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  lodgingState.name =
+  const activeKey = getActiveLodgingKey();
+  lodgingState.activeKey = activeKey;
+  lodgingState.stays[activeKey].name =
     lodgingForm.elements.lodgingName.value.trim() || "숙소";
-  lodgingState.address = lodgingForm.elements.lodgingAddress.value.trim();
+  lodgingState.stays[activeKey].address = lodgingForm.elements.lodgingAddress.value.trim();
 
-  localStorage.setItem("japanScheduleLodging", JSON.stringify(lodgingState));
+  saveStoredLodgings();
   updateLodgingView();
   openLodgingRoute();
 });
 
 lodgingRoute.addEventListener("click", openLodgingRoute);
+floatingLodgingRoute.addEventListener("click", openLodgingRoute);
 
 search.addEventListener("input", (event) => {
   const value = event.target.value.trim().toLowerCase();
