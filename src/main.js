@@ -191,8 +191,15 @@ const itineraryDays = [
       {
         time: "11:30~11:50",
         title: "플라잉재팬 난바 짐 보관",
-        note: "난바역 플라잉재팬 난바 짐보관센터에 캐리어 위탁 (오후 9시까지 운영). 찾아가는 영상: https://sites.google.com/flyingjp.com/tourist",
+        note: "난바역 플라잉재팬 난바 짐보관센터에 캐리어 위탁 (오후 9시까지 운영). 찾아가는 영상 참고.",
         mapUrl: "https://maps.app.goo.gl/dTLymsibxedGm2gC9",
+        youtubeId: "KrxxTK4lmJs",
+        extraLinks: [
+          {
+            label: "공식 안내",
+            url: "https://sites.google.com/flyingjp.com/tourist",
+          },
+        ],
       },
       {
         time: "11:50~12:30",
@@ -971,9 +978,24 @@ function renderItinerary() {
 
       content.append(itemTitle, note);
 
+      if (item.youtubeId) {
+        const videoWrap = document.createElement("div");
+        videoWrap.className = "item-video";
+        const iframe = document.createElement("iframe");
+        iframe.src = `https://www.youtube.com/embed/${item.youtubeId}`;
+        iframe.title = `${item.title} 영상`;
+        iframe.loading = "lazy";
+        iframe.allow =
+          "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+        iframe.referrerPolicy = "strict-origin-when-cross-origin";
+        iframe.allowFullscreen = true;
+        videoWrap.append(iframe);
+        content.append(videoWrap);
+      }
+
       const mapQuery = getMapQuery(item);
 
-      if (mapQuery || item.mapUrl || item.extraLinks?.length) {
+      if (mapQuery || item.mapUrl || item.extraLinks?.length || item.youtubeId) {
         const actions = document.createElement("div");
         actions.className = "item-actions";
 
@@ -983,6 +1005,12 @@ function renderItinerary() {
 
         if (item.mapUrl) {
           actions.append(createMapLink("원본 링크", item.mapUrl));
+        }
+
+        if (item.youtubeId) {
+          actions.append(
+            createMapLink("YouTube에서 보기", `https://youtu.be/${item.youtubeId}`),
+          );
         }
 
         item.extraLinks?.forEach((link) => {
